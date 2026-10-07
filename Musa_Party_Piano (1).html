@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Musa Party Piano</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#18233d,#05070d 65%);color:#fff;font-family:Georgia,serif;text-align:center;min-height:100vh}
+.stage{max-width:1050px;margin:auto;padding:28px 18px 45px}.brand{letter-spacing:5px;text-transform:uppercase;color:#ffd86b;font-size:13px}.intro h1{font-size:clamp(38px,7vw,72px);margin:8px 0;background:linear-gradient(90deg,#fff,#ffd76a,#fff);-webkit-background-clip:text;color:transparent}.subtitle{color:#bfc8db}.badge{display:inline-block;padding:6px 12px;border:1px solid #506080;border-radius:20px;font-family:Arial;font-size:12px}
+.panel{background:rgba(12,17,30,.8);border:1px solid #33415f;border-radius:22px;padding:18px;margin:18px 0;box-shadow:0 15px 45px #0008}.controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.control,button,select{font:600 14px Arial;border-radius:12px}.control{display:flex;align-items:center;gap:7px;color:#cbd5e1}select,button{background:#151d30;color:white;border:1px solid #465675;padding:11px 14px}button{cursor:pointer}button:hover{border-color:#ffd86b;transform:translateY(-1px)}.primary{background:#ffd86b;color:#10131a;border-color:#ffd86b}.danger{background:#7f2632}
+.display{min-height:90px;display:flex;flex-direction:column;justify-content:center}.last-note{font-size:32px;font-weight:bold;color:#ffd86b}.status{margin:6px;color:#aeb9cc;font:13px Arial}.piano-wrap{overflow-x:auto;padding:10px 2px 22px}.piano{position:relative;display:flex;min-width:720px;height:310px;justify-content:center;margin:auto}.key{position:relative;width:11.8%;height:100%;background:linear-gradient(180deg,#fff,#d9dde6);color:#121722;border:1px solid #707888;border-radius:0 0 12px 12px;box-shadow:0 9px 0 #7c8390,0 15px 22px #0008;cursor:pointer;padding-top:28px;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:22px;user-select:none}.key.active{background:linear-gradient(#ffeaa1,#fff);box-shadow:0 3px 0 #7c8390,0 0 25px #ffd86b}.note-name{font-size:24px}.solfege{font:14px Arial;color:#596274;margin:5px}.key kbd,.black-key kbd{font:bold 13px Arial;border:1px solid #8b93a1;border-radius:6px;padding:5px 9px;margin:auto}.black-key{position:absolute;top:0;height:195px;width:8%;z-index:3;background:linear-gradient(90deg,#06080d,#343b4a,#07090e);border:1px solid #000;border-radius:0 0 9px 9px;box-shadow:0 10px 12px #000b;cursor:pointer;padding-top:18px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding-bottom:15px}.black-key.active{background:linear-gradient(90deg,#574d21,#ffd86b,#302a13)}.black-key span{font:bold 13px Arial}.black-key[style*="--i:0"]{left:8%}.black-key[style*="--i:1"]{left:20%}.black-key[style*="--i:3"]{left:44%}.black-key[style*="--i:4"]{left:56%}.black-key[style*="--i:5"]{left:68%}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.quick button{padding:16px}.section-title{font:700 12px Arial;letter-spacing:2px;color:#8795ae;text-transform:uppercase;margin-bottom:12px}.volume{width:180px;accent-color:#ffd86b}.meter{height:6px;background:#202a3e;border-radius:10px;overflow:hidden;margin-top:10px}.meter i{display:block;height:100%;width:0;background:#ffd86b;transition:width .08s}
+footer{color:#66738b;font:12px Arial;margin-top:20px}
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="brand">MUSA MUSIC • PARTY EDITION</div>
+  <header class="intro">
+    <h1>Musa Party Piano</h1>
+    <p class="subtitle">A piano, rhythm box and party instrument in one.</p>
+    <span class="badge">Piano • Chords • Beats • Party Sounds</span>
+  </header>
+
+  <section class="panel display" aria-live="polite">
+    <div id="last-note" class="last-note">Ready to make some joy 🎹</div>
+    <p id="status" class="status">Click a key or use A–K on your keyboard.</p>
+    <div class="meter"><i id="meter"></i></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-title">Sound & Performance</div>
+    <div class="controls">
+      <label class="control">Instrument
+        <select id="instrument"><option value="piano">Grand Piano</option><option value="bright">Bright Piano</option><option value="organ">Party Organ</option><option value="synth">Dance Synth</option></select>
+      </label>
+      <label class="control">Volume <input id="volume" class="volume" type="range" min="0" max="1" step=".01" value=".75"></label>
+      <button id="sustain">Sustain: OFF</button>
+      <button id="party" class="primary">🎉 Party Mode</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-title">Party Chords</div>
+    <div class="quick">
+      <button data-chord="C">C Major</button><button data-chord="G">G Major</button>
+      <button data-chord="Am">A Minor</button><button data-chord="F">F Major</button>
+      <button data-chord="Dm">D Minor</button><button data-chord="Em">E Minor</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-title">The Musa Piano</div>
+    <div class="piano-wrap">
+      <div class="piano" id="piano">
+        <div class="key" data-key="a" data-note="C4"><span class="note-name">C</span><span class="solfege">Do</span><kbd>A</kbd></div>
+        <div class="key" data-key="s" data-note="D4"><span class="note-name">D</span><span class="solfege">Re</span><kbd>S</kbd></div>
+        <div class="key" data-key="d" data-note="E4"><span class="note-name">E</span><span class="solfege">Mi</span><kbd>D</kbd></div>
+        <div class="key" data-key="f" data-note="F4"><span class="note-name">F</span><span class="solfege">Fa</span><kbd>F</kbd></div>
+        <div class="key" data-key="g" data-note="G4"><span class="note-name">G</span><span class="solfege">Sol</span><kbd>G</kbd></div>
+        <div class="key" data-key="h" data-note="A4"><span class="note-name">A</span><span class="solfege">La</span><kbd>H</kbd></div>
+        <div class="key" data-key="j" data-note="B4"><span class="note-name">B</span><span class="solfege">Ti</span><kbd>J</kbd></div>
+        <div class="key" data-key="k" data-note="C5"><span class="note-name">C</span><span class="solfege">Do</span><kbd>K</kbd></div>
+        <div class="black-key" data-key="w" data-note="C#4" style="--i:0"><span>C#</span><kbd>W</kbd></div>
+        <div class="black-key" data-key="e" data-note="D#4" style="--i:1"><span>D#</span><kbd>E</kbd></div>
+        <div class="black-key" data-key="t" data-note="F#4" style="--i:3"><span>F#</span><kbd>T</kbd></div>
+        <div class="black-key" data-key="y" data-note="G#4" style="--i:4"><span>G#</span><kbd>Y</kbd></div>
+        <div class="black-key" data-key="u" data-note="A#4" style="--i:5"><span>A#</span><kbd>U</kbd></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-title">Party Rhythm</div>
+    <div class="quick">
+      <button data-beat="dance">🥁 Dance Beat</button><button data-beat="afro">🌍 Afro Groove</button>
+      <button data-beat="clap">👏 Claps</button><button id="stopBeat" class="danger">■ Stop Rhythm</button>
+    </div>
+  </section>
+  <footer>Made for Musa • Play it at parties, celebrations and any place of joy.</footer>
+</main>
+
+<script>
+const A=window.AudioContext||window.webkitAudioContext;let ctx=null,master=null,sustain=false,beatTimer=null;
+const freqs={C4:261.63,'C#4':277.18,D4:293.66,'D#4':311.13,E4:329.63,F4:349.23,'F#4':369.99,G4:392,'G#4':415.30,A4:440,'A#4':466.16,B4:493.88,C5:523.25};
+const chords={C:['C4','E4','G4'],G:['G4','B4','D4'],Am:['A4','C5','E4'],F:['F4','A4','C5'],Dm:['D4','F4','A4'],Em:['E4','G4','B4']};
+function audio(){if(!ctx){ctx=new A();master=ctx.createGain();master.gain.value=.75;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume()}
+function tone(note,dur=.65,offset=0){audio();const o=ctx.createOscillator(),g=ctx.createGain(),f=freqs[note]||440,now=ctx.currentTime+offset;let type=document.getElementById('instrument').value;o.type=type==='organ'?'sine':type==='synth'?'sawtooth':type==='bright'?'triangle':'sine';o.frequency.setValueAtTime(f,now);if(type==='synth')o.detune.setValueAtTime(3,now);g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.24,now+.015);g.gain.exponentialRampToValueAtTime(.001,now+dur);o.connect(g);g.connect(master);o.start(now);o.stop(now+dur+.03)}
+function play(el){audio();const n=el.dataset.note;tone(n,sustain?1.5:.7);el.classList.add('active');setTimeout(()=>el.classList.remove('active'),180);document.getElementById('last-note').textContent=n;document.getElementById('status').textContent='Musa is playing • '+n;const m=document.getElementById('meter');m.style.width='100%';setTimeout(()=>m.style.width='0',100)}
+document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('pointerdown',()=>play(el)));
+document.addEventListener('keydown',e=>{if(e.repeat||e.target.matches('input,select'))return;const el=document.querySelector('[data-key="'+e.key.toLowerCase()+'"]');if(el)play(el)});
+document.getElementById('volume').oninput=e=>{audio();master.gain.value=e.target.value};
+document.getElementById('sustain').onclick=e=>{sustain=!sustain;e.currentTarget.textContent='Sustain: '+(sustain?'ON':'OFF')};
+document.querySelectorAll('[data-chord]').forEach(b=>b.onclick=()=>chords[b.dataset.chord].forEach((n,i)=>tone(n,.9,i*.045)));
+document.getElementById('party').onclick=()=>{['C','G','Am','F'].forEach((c,i)=>setTimeout(()=>chords[c].forEach(n=>tone(n,.7)),i*350));startBeat('dance')};
+function startBeat(kind){audio();clearInterval(beatTimer);let step=0;const tempo=kind==='afro'?260:320;beatTimer=setInterval(()=>{const t=ctx.currentTime;const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=step%4===0?90:step%2?180:120;g.gain.setValueAtTime(step%4===0?.34:.14,t);g.gain.exponentialRampToValueAtTime(.001,t+.11);o.connect(g);g.connect(master);o.start(t);o.stop(t+.12);if(kind==='clap'&&step%4===2)tone('C5',.08);step++},tempo)};
+document.querySelectorAll('[data-beat]').forEach(b=>b.onclick=()=>startBeat(b.dataset.beat));
+document.getElementById('stopBeat').onclick=()=>clearInterval(beatTimer);
+</script>
+</body></html>
